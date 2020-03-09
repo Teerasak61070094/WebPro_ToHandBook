@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1>To Hand Book</h1>
+    {% if book_view.type_post == 'S' %}
+    <h2>ขาย {{ book_view.name_book }}</h2>
+    {% else %}
+    <h2>ซื้อ {{ book_view.name_book }}</h2>
+    {% endif %}
+    <br/><br/>
+    <div class="d-flex flex-row">
+    <div class="form-group mx-3" >
+        <img src="{{ book_view.picture }}" class="rounded float-left" style="width: 300px; height: 300px;">
+    </div>
+    <div class="form-group mx-3" >
+        <p>ชื่อหนังสือ: {{  book_view.name_book }}</p>
+        {% if book_view.type_post == 'S' %}
+            <p>ราคาขาย: {{ book_view.price }}</p>
+            <p>ขายโดย: {{ book_view.create_by.first_name }}</p>
+            <p>เริ่มขายเมื่อ: {{ book_view.create_date }}</p>
+                {% if book_view.create_by.id == view_by.id %}
+                    <a href="{% url 'sold_out' book_id=book_view.id %}">
+                        <div class="btn btn-warning">ขายแล้ว</div>
+                    </a>
+                {% endif %}
+        {% else %}
+            <p>ราคาซื้อ: {{ book_view.price }}</p>
+            <p>รับซื้อโดย: {{ book_view.create_by.first_name }}</p>
+            <p>ตั้งรับเมื่อ: {{ book_view.create_date }}</p>
+        {% endif %}
+    </div>
+    <div class="form-group mx-3">
+        {% if user.is_authenticated %}
+        <form class="form-inline" method="POST" action="{% url 'comment' book_id=book_id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" class="form-control ml-3" id="inputext" 
+                    name="inputext" required>
+            </div>
+            <button type="submit" class="btn btn-primary ml-3">เขียน comment</button>
+        </form>
+        {% endif %}
+        <br>
+        {% for cm in comment_text %}
+            <div class="border">
+                <div class="d-flex flex-row mx-3"><p >{{ cm.message }}</p></div>
+                <div class="d-flex flex-row-reverse mx-3"><p>โดย {{ cm.create_by.first_name }} : วันเวลา {{ cm.create_date }}</p></div>
+            </div>
+        {% endfor %}
+    </div>
+    </div>
+    <br/><br/>
+</div>
+{% endblock content %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1>To Hand Book</h1>
+    <br/><br/>
+    <form class="form-inline" method="GET" action="{% url 'index' %}">
+        <div class="form-group mx-3">
+            <label for="what_book">ค้นหารายการ:</label>
+            <select class="form-control mx-3" id="what_book" name="what_book">
+                <option value="">--ทั้งหมด--</option>
+                <option value="B" {% if what_book == 'B' %}selected{% endif %}>ซื้อ</option>
+                <option value="S" {% if what_book == 'S' %}selected{% endif %}>ขาย</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="inputSearch">ชื่อหนังสือ</label>
+            <input type="text" class="form-control ml-3" id="inputSearch" 
+                name="inputSearch" placeholder="Search" value="{{search_txt}}">
+        </div>
+        
+        <button type="submit" class="btn btn-primary ml-3">ค้นหา</button>
+    </form>
+    <br/><br/>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">รายชื่อหนังสือ</th>
+                <th scope="col">ประเภท</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in books %}
+            <tr>
+                <td  scope="col"><a href="{% url 'view_post' book_id=p.id %}">{{ p.name_book }}</a></td>
+                {% for bt in booktype %}
+                    {% if p.type_post == bt.0 %} <td>{{ bt.1 }}</td> {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

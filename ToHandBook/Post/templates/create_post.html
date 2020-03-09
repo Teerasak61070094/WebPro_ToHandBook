@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1>To Hand Book</h1>
+    <br/><br/>
+    <form  method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group mx-3">
+            <label for="type_post">สร้างโพส:</label>
+            <select class="form-control mx-3" id="type_post" name="type_post">
+                <option value="B" {% if type_post == 'B' %}selected{% endif %}>รับซื้อ</option>
+                <option value="S" {% if type_post == 'S' %}selected{% endif %}>ขาย</option>
+            </select>
+        </div>
+        <div class="form-group mx-3">
+            <label for="book_name">ชื่อหนังสือ:</label>
+            <input type="text" class="form-control ml-3" id="book_name" 
+                name="book_name" value="{{book_name}}" required>
+        </div>
+        <div class="form-group mx-3">
+            <label for="price">ราคา ซื้อ-ขาย :</label>
+            <input type="number" step="any" class="form-control ml-3" id="price" 
+                name="price" value="{{price}}" required>
+        </div>
+        <div class="form-group mx-3">
+            <label for="pic">รูป:</label>
+            <input type="file" name="picfile"/>
+        </div>
+        <button type="submit" class="btn btn-primary ml-3">Submit</button>
+    </form>
+    <br/><br/>
+</div>
+{% endblock content %}
